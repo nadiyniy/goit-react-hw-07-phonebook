@@ -1,19 +1,8 @@
 import React from 'react';
-import { BallTriangle } from 'react-loader-spinner';
+import { BeatLoader } from 'react-spinners';
 
 const Loader = () => {
-  return (
-    <BallTriangle
-      height={100}
-      width={100}
-      radius={5}
-      color="#4fa94d"
-      ariaLabel="ball-triangle-loading"
-      wrapperClass={{}}
-      wrapperStyle=""
-      visible={true}
-    />
-  );
+  return <BeatLoader color="lightblue" size={8} />;
 };
 
 export default Loader;

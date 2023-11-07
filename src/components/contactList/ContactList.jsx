@@ -10,6 +10,7 @@ import { StyledListUl } from './ContactList.styled';
 import { useEffect } from 'react';
 import { deleteContactThunk } from 'redux/operations';
 import { toast } from 'react-toastify';
+import Loader from 'components/loader/Loader';
 
 const ContactList = () => {
   const contacts = useSelector(selectContacts);
@@ -43,7 +44,9 @@ const ContactList = () => {
         <li key={contact.id}>
           {contact.name}: {contact.number}
           {isLoading && currentId === contact.id ? (
-            <button>deleting...</button>
+            <button>
+              <Loader />
+            </button>
           ) : (
             <button onClick={() => handleDeleteContact(contact.id)}>
               Delete
