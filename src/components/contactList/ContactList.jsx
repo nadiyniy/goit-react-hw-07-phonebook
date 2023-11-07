@@ -18,7 +18,6 @@ const ContactList = () => {
   const isLoading = useSelector(selectIsLoading);
   const currentId = useSelector(selectCurrentId);
   const dispatch = useDispatch();
-  console.log(error);
 
   const handleDeleteContact = id => {
     dispatch(deleteContactThunk(id));

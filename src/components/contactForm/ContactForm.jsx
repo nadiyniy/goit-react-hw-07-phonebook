@@ -40,9 +40,7 @@ const ContactForm = () => {
     const newContact = {
       number: number.trim(),
       name: name.trim(),
-      // id: crypto.randomUUID(),
     };
-    console.log(newContact);
 
     if (!name.trim()) {
       return;
