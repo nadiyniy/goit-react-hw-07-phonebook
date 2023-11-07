@@ -24,11 +24,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('./image/phonebook.jpeg');
+  background-image: url('./image/booksphone.jpeg');
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: auto 100%;
-  /* background-position: center; */
+  background-size: cover;
 }
 
 code {

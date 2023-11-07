@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { selectContacts } from 'redux/selectors';
 import { StyledContactForm } from './ContactForm.styled';
-import { addContact } from 'redux/contactsSlice';
+import { addContactThunk } from 'redux/operations';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -20,7 +20,7 @@ const ContactForm = () => {
     if (isDublicate) {
       alert(`${newContact.name} is already in contacts.`);
     } else {
-      dispatch(addContact(newContact));
+      dispatch(addContactThunk(newContact));
     }
   };
 
@@ -40,8 +40,9 @@ const ContactForm = () => {
     const newContact = {
       number: number.trim(),
       name: name.trim(),
-      id: crypto.randomUUID(),
+      // id: crypto.randomUUID(),
     };
+    console.log(newContact);
 
     if (!name.trim()) {
       return;

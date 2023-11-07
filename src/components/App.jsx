@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ContactForm from './contactForm/ContactForm';
 import Filter from './filter/Filter';
 import ContactList from './contactList/ContactList';
 import Notification from './notifications/Notification';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts, selectFilter } from 'redux/selectors';
 import { StyledMainWrapper } from './App.styled';
 import { GrContactInfo } from 'react-icons/gr';
+import { fetchDataThunk } from 'redux/operations';
 
 export const App = () => {
   const contacts = useSelector(selectContacts);
@@ -14,7 +15,10 @@ export const App = () => {
   const findContact = contacts.filter(contact =>
     contact.name.trim().toLowerCase().includes(filter.trim().toLowerCase())
   );
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchDataThunk());
+  }, [dispatch]);
   return (
     <StyledMainWrapper>
       <div>

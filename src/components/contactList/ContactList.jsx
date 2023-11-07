@@ -1,16 +1,27 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts, selectFilter } from 'redux/selectors';
+import {
+  selectContacts,
+  selectError,
+  selectFilter,
+  selectIsLoading,
+  selectCurrentId,
+} from 'redux/selectors';
 import { StyledListUl } from './ContactList.styled';
-import { deleteContact } from 'redux/contactsSlice';
+import { useEffect } from 'react';
+import { deleteContactThunk } from 'redux/operations';
+import { toast } from 'react-toastify';
 
 const ContactList = () => {
   const contacts = useSelector(selectContacts);
   const filter = useSelector(selectFilter);
-
+  const error = useSelector(selectError);
+  const isLoading = useSelector(selectIsLoading);
+  const currentId = useSelector(selectCurrentId);
   const dispatch = useDispatch();
+  console.log(error);
 
   const handleDeleteContact = id => {
-    dispatch(deleteContact(id));
+    dispatch(deleteContactThunk(id));
   };
 
   const getFilterContacts = () => {
@@ -19,6 +30,12 @@ const ContactList = () => {
     );
   };
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error, isLoading]);
+
   const filterContact = getFilterContacts();
 
   return (
@@ -26,9 +43,13 @@ const ContactList = () => {
       {filterContact.map(contact => (
         <li key={contact.id}>
           {contact.name}: {contact.number}
-          <button onClick={() => handleDeleteContact(contact.id)}>
-            Delete
-          </button>
+          {isLoading && currentId === contact.id ? (
+            <button>deleting...</button>
+          ) : (
+            <button onClick={() => handleDeleteContact(contact.id)}>
+              Delete
+            </button>
+          )}
         </li>
       ))}
     </StyledListUl>

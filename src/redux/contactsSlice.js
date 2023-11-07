@@ -1,28 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import {
+  addContactThunk,
+  deleteContactThunk,
+  fetchDataThunk,
+} from './operations';
 
 const initialState = {
-  contacts: [
-    {
-      id: '1',
-      name: 'Ivan Petrenko',
-      number: '099-122-32-20',
-    },
-    {
-      id: '2',
-      name: 'Ivan Babich',
-      number: '099-122-32-23',
-    },
-    {
-      id: '3',
-      name: 'Ivan Kobzar',
-      number: '099-122-32-22',
-    },
-    {
-      id: '4',
-      name: 'Ivan Roberto',
-      number: '099-122-32-21',
-    },
-  ],
+  contacts: {
+    items: [],
+    isLoading: false,
+    error: null,
+  },
+  deletedId: null,
   filter: '',
 };
 
@@ -30,22 +19,54 @@ const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
   reducers: {
-    addContact: (state, { payload }) => {
-      state.contacts.push(payload);
-      state.filter = '';
-    },
-
-    deleteContact: (state, { payload }) => {
-      const index = state.contacts.findIndex(contact => contact.id === payload);
-      state.contacts.splice(index, 1);
-    },
-
     filterContactAC: (state, { payload }) => {
       state.filter = payload;
     },
+    setCurrentId: (state, { payload }) => {
+      state.deletedId = payload;
+    },
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(fetchDataThunk.fulfilled, (state, { payload }) => {
+        state.contacts.isLoading = false;
+        state.contacts.items = payload;
+      })
+      .addCase(deleteContactThunk.fulfilled, (state, { payload }) => {
+        state.contacts.isLoading = false;
+        state.contacts.items = state.contacts.items.filter(
+          item => item.id !== payload.id
+        );
+      })
+      .addCase(addContactThunk.fulfilled, (state, { payload }) => {
+        state.contacts.isLoading = false;
+        state.contacts.items.push(payload);
+      })
+      .addMatcher(
+        isAnyOf(
+          fetchDataThunk.pending,
+          deleteContactThunk.pending,
+          addContactThunk.pending
+        ),
+        (state, { payload }) => {
+          state.contacts.isLoading = true;
+          state.contacts.error = payload;
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          fetchDataThunk.rejected,
+          deleteContactThunk.rejected,
+          addContactThunk.rejected
+        ),
+        (state, { payload }) => {
+          state.contacts.isLoading = false;
+          state.contacts.error = payload;
+        }
+      );
   },
 });
 
-export const { addContact, deleteContact, filterContactAC } =
+export const { addContact, deleteContact, filterContactAC, setCurrentId } =
   contactsSlice.actions;
 export const contactReducer = contactsSlice.reducer;
