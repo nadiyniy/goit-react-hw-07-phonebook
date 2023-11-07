@@ -44,7 +44,7 @@ const ContactList = () => {
         <li key={contact.id}>
           {contact.name}: {contact.number}
           {isLoading && currentId === contact.id ? (
-            <button>
+            <button disabled>
               <Loader />
             </button>
           ) : (

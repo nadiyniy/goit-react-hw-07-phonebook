@@ -29,6 +29,7 @@ export const StyledContactForm = styled.form`
     cursor: pointer;
     border-radius: 5px;
     border: 1px solid black;
+    background-color: white;
 
     &:hover,
     &:focus {

@@ -4,14 +4,17 @@ import Filter from './filter/Filter';
 import ContactList from './contactList/ContactList';
 import Notification from './notifications/Notification';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts, selectFilter } from 'redux/selectors';
+import { selectContacts, selectFilter, selectIsLoading } from 'redux/selectors';
 import { StyledMainWrapper } from './App.styled';
 import { GrContactInfo } from 'react-icons/gr';
 import { fetchDataThunk } from 'redux/operations';
+import { LoaderBig } from './loader/Loader';
 
 export const App = () => {
   const contacts = useSelector(selectContacts);
   const filter = useSelector(selectFilter);
+  const isLoading = useSelector(selectIsLoading);
+
   const findContact = contacts.filter(contact =>
     contact.name.trim().toLowerCase().includes(filter.trim().toLowerCase())
   );
@@ -29,7 +32,9 @@ export const App = () => {
         {contacts.length ? <Filter /> : null}
       </div>
       <div>
-        {contacts.length && findContact.length ? (
+        {isLoading && !contacts.length && !findContact.length ? (
+          <LoaderBig />
+        ) : contacts.length && findContact.length ? (
           <ContactList />
         ) : (
           <Notification message={'No existing contacts...'} />

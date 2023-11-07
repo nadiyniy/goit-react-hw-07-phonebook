@@ -19,6 +19,8 @@ export const StyledListUl = styled.ul`
     & {
     }
     button {
+      background-color: white;
+
       padding: 5px 10px;
       height: 28px;
       cursor: pointer;
