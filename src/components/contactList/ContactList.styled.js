@@ -2,7 +2,10 @@ import styled from 'styled-components';
 
 export const StyledListUl = styled.ul`
   display: flex;
-  justify-content: center;
+  //justify-content: center;
+  margin: 0 auto;
+  overflow: auto;
+  max-height: 300px;
   flex-direction: column;
   max-width: 420px;
   gap: 5px;
